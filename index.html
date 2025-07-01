@@ -159,39 +159,39 @@
             <div class="methodology__content">
                 <div class="strategic-levels">
                     <div class="level-card">
-                        <h3 class="level-card__title">Owner Strategy</h3>
-                        <p class="level-card__description">
-                            Is our business optimal in terms of risk and rewards compared to other shareholder investment opportunities? 
-                            What are the expectations of the principal?
-                        </p>
-                    </div>
-                    <div class="level-card">
-                        <h3 class="level-card__title">Business Strategy</h3>
-                        <p class="level-card__description">
-                            Where and against whom and how/with what do we compete? What makes us valuable? 
-                            Do we want to differentiate? Where and how do we want to grow?
-                        </p>
-                    </div>
-                    <div class="level-card">
-                        <h3 class="level-card__title">Corporate Strategy</h3>
-                        <p class="level-card__description">
-                            Which businesses are we in (long term view)? What resources do we allocate to those businesses? 
-                            Which synergies do we strive for? Which alliances?
-                        </p>
-                    </div>
-                    <div class="level-card">
-                        <h3 class="level-card__title">Configuration Strategy</h3>
-                        <p class="level-card__description">
-                            How do we configure the 'Value Added'-Engine? Where are areas of freedom and where do we seek for synergies? 
-                            How are we organized in terms of processes and structures?
-                        </p>
-                    </div>
-                    <div class="level-card">
-                        <h3 class="level-card__title">Functional Strategies</h3>
-                        <p class="level-card__description">
-                            What are the guiding principles and standards for our businesses with regard to general business functions?
-                        </p>
-                    </div>
+    <h3 class="level-card__title">Owner Strategy</h3>
+    <p class="level-card__description">
+        Is our business optimal in terms of risk and rewards compared to other shareholder investment opportunities? 
+        What are the expectations of the principal?
+    </p>
+</div>
+<div class="level-card">
+    <h3 class="level-card__title">Corporate Strategy</h3>
+    <p class="level-card__description">
+        Which businesses are we in (long term view)? What resources do we allocate to those businesses? 
+        Which synergies do we strive for? Which alliances?
+    </p>
+</div>
+<div class="level-card">
+    <h3 class="level-card__title">Business Strategy</h3>
+    <p class="level-card__description">
+        Where and against whom and how/with what do we compete? What makes us valuable? 
+        Do we want to differentiate? Where and how do we want to grow?
+    </p>
+</div>
+<div class="level-card">
+    <h3 class="level-card__title">Configuration Strategy</h3>
+    <p class="level-card__description">
+        How do we configure the 'Value Added'-Engine? Where are areas of freedom and where do we seek for synergies? 
+        How are we organized in terms of processes and structures?
+    </p>
+</div>
+<div class="level-card">
+    <h3 class="level-card__title">Functional Strategies</h3>
+    <p class="level-card__description">
+        What are the guiding principles and standards for our businesses with regard to general business functions?
+    </p>
+</div>
                 </div>
             </div>
         </div>
@@ -318,25 +318,26 @@
                 </div>
                 
                 <div class="contact__form">
-                    <form class="form" id="contact-form">
-                        <div class="form-group">
-                            <label for="name" class="form-label">Name *</label>
-                            <input type="text" id="name" name="name" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="form-label">Email *</label>
-                            <input type="email" id="email" name="email" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="company" class="form-label">Company</label>
-                            <input type="text" id="company" name="company" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="message" class="form-label">Message *</label>
-                            <textarea id="message" name="message" rows="5" class="form-control" required placeholder="Tell us about your strategic challenges and how we can help..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn--primary btn--full-width">Send Message</button>
-                    </form>
+                    <form class="form" id="contact-form" action="https://formspree.io/f/mwpbyazo" method="POST">
+  <div class="form-group">
+    <label for="name" class="form-label">Name *</label>
+    <input type="text" id="name" name="name" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label for="email" class="form-label">Email *</label>
+    <input type="email" id="email" name="email" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label for="company" class="form-label">Company</label>
+    <input type="text" id="company" name="company" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="message" class="form-label">Message *</label>
+    <textarea id="message" name="message" rows="5" class="form-control" required placeholder="Tell us about your strategic challenges and how we can help..."></textarea>
+  </div>
+  <button type="submit" class="btn btn--primary btn--full-width">Send Message</button>
+  <p id="form-status"></p>
+</form>
                 </div>
             </div>
         </div>
@@ -375,5 +376,36 @@
     </footer>
 
     <script src="app.js"></script>
+<script>
+  var form = document.getElementById("contact-form");
+  async function handleSubmit(event) {
+    event.preventDefault();
+    var status = document.getElementById("form-status");
+    var data = new FormData(event.target);
+    fetch(event.target.action, {
+      method: form.method,
+      body: data,
+      headers: {
+          'Accept': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        status.innerHTML = "Thanks for your submission!";
+        form.reset();
+      } else {
+        response.json().then(data => {
+          if (Object.hasOwn(data, 'errors')) {
+            status.innerHTML = data["errors"].map(error => error["message"]).join(", ");
+          } else {
+            status.innerHTML = "Oops! There was a problem submitting your form";
+          }
+        });
+      }
+    }).catch(error => {
+      status.innerHTML = "Oops! There was a problem submitting your form";
+    });
+  }
+  if(form) {form.addEventListener("submit", handleSubmit);}
+</script>
 </body>
 </html>
